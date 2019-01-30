@@ -2,21 +2,145 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-    <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
-    <TextView
-        android:id="@+id/Textviewname"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieDetail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="1"
-        />
-    <TextView
-        android:id="@+id/Textviewage"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="4"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/movieDetailLeft"
+            android:layout_width="@dimen/weight_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#120ff0">
+
+            <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/movieDetailLeftPic"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+            </ImageView>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/movieDetailRight"
+            android:layout_width="@dimen/weight_zero"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="2"
+            android:background="#950ff0"
+            >
+
+            <TextView
+                android:id="@+id/textViewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_zero"
+                android:layout_weight="1"
+                android:text="2"
+                />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/movieDetailRightDC"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_zero"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="#079ff0">
+                <TextView
+                    android:id="@+id/movieDetailRightD"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Duration"
+                    />
+                <TextView
+                    android:id="@+id/movieDetailRightC"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Category"
+                    />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/movieDetailRightP"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_zero"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="#950ff0">
+                <TextView
+                    android:id="@+id/movieDetailRightPress"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Press"
+                    />
+                <TextView
+                    android:id="@+id/movieDetailRightPstar"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Pstar"
+                    />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/movieDetailRightS"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_zero"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="#DC143C"
+                >
+                <TextView
+                    android:id="@+id/movieDetailRightSpect"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Spect"
+                    />
+                <TextView
+                    android:id="@+id/movieDetailRightSstar"
+                    android:layout_width="@dimen/weight_zero"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Sstar"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieTime"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="2"
-        />
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        android:background="#800080"
+        >
+        <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
+        <TextView
+            android:id="@+id/textViewTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1"
+            />
+    </LinearLayout>
+
+
+
 </LinearLayout>

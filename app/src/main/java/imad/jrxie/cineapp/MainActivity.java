@@ -1,11 +1,9 @@
 package imad.jrxie.cineapp;
 
+import android.content.Context;
 import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
-
-
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,27 +11,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import com.squareup.picasso.Picasso;
 
 
 public class MainActivity extends Activity
 {
-    private TextView tv1;//item.xml里的TextView：Textviewname
-    private TextView tv2;//item.xml里的TextView：Textviewage
-    private Button bt;//activity_main.xml里的Button
+    private TextView tv1;//item.xml里的TextView：textViewDetail
+    private TextView tv2;//item.xml里的TextView：textViewTime
     private ListView lv;//activity_main.xml里的ListView
     private BaseAdapter adapter;//要实现的类
     private List<User> userList = new ArrayList<User>();//实体类
+    String imageUri = "https://ws3.sinaimg.cn/large/006tNc79gy1fzl6w3xzgaj308w08vwf2.jpg";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView ivBasicImage = (ImageView)findViewById(R.id.movieDetailLeftPic);
 
-        bt = (Button) findViewById(R.id.Button);
+        if (MainActivity.this == null)
+            Log.d("Create", "onCreate: main");
+        if (ivBasicImage == null)
+            Log.d("Create", "onCreate: ivbasic");
+
+
+        Picasso.with(MainActivity.this).load(imageUri).into(ivBasicImage);
+
+        //bt = (Button) findViewById(R.id.Button);
         lv = (ListView) findViewById(R.id.listView1);
 
         //模拟数据库
@@ -75,10 +84,10 @@ public class MainActivity extends Activity
                     view=convertView;
                     Log.i("info","有缓存，不需要重新生成"+position);
                 }
-                tv1 = (TextView) view.findViewById(R.id.Textviewname);//找到Textviewname
+                tv1 = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
                 tv1.setText(userList.get(position).getName());//设置参数
 
-                tv2 = (TextView) view.findViewById(R.id.Textviewage);//找到Textviewage
+                tv2 = (TextView) view.findViewById(R.id.textViewTime);//找到textViewTime
                 tv2.setText(userList.get(position).getAge());//设置参数
                 return view;
             }

@@ -4,10 +4,12 @@ package imad.jrxie.cineapp;
  * Created by jrxie on 2019/1/30.
  */
 
-public class User {
+public class User
+{
     private String name;
     private String age;
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
     public void setName(String name) {

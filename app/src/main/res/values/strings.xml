@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">CineApp</string>
-    <string name="helloworld">HelloWorld</string>
+    <string name="TopTitle">Ciné Dôme Movies</string>
 </resources>
