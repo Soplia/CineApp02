@@ -20,10 +20,10 @@
             android:orientation="horizontal"
             android:background="#120ff0">
 
-            <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+            <ImageView
                 android:id="@+id/movieDetailLeftPic"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="match_parent">
             </ImageView>
 
 
