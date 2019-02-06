@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieTime"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_zero"
+        android:orientation="horizontal"
+        android:layout_weight="4"
+        android:background="#800080"
+        >
+        <ImageView
+            android:id="@+id/movieDetailPic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:id="@+id/movieDetailD"
+            android:layout_width="@dimen/weight_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Duration"
+            />
+        <TextView
+            android:id="@+id/movieDetailC"
+            android:layout_width="@dimen/weight_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Category"
+            />
+        <TextView
+            android:id="@+id/movieDetailCo"
+            android:layout_width="@dimen/weight_zero"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Country"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#800080"
+        >
+        <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
+        <TextView
+            android:id="@+id/movieDetailDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description:"
+            android:background="#FFF"
+            />
+        <TextView
+            android:id="@+id/textViewDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, rebum mundi similique vim no, persequeris accommodare no sea. Eu epicuri iudicabit mediocritatem eum, no alii atqui affert est. Wisi inani rationibus us"
+            android:background="#FFF"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/movieDetail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_zero"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/movieDetailRightP"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_zero"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#950ff0">
+            <TextView
+                android:id="@+id/movieDetailRightPress"
+                android:layout_width="@dimen/weight_zero"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Press"
+                />
+            <TextView
+                android:id="@+id/movieDetailRightPstar"
+                android:layout_width="@dimen/weight_zero"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Pstar"
+                />
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/movieDetailRightS"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_zero"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#DC143C"
+            >
+            <TextView
+                android:id="@+id/movieDetailRightSpect"
+                android:layout_width="@dimen/weight_zero"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Spect"
+                />
+            <TextView
+                android:id="@+id/movieDetailRightSstar"
+                android:layout_width="@dimen/weight_zero"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Sstar"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

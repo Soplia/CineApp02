@@ -130,14 +130,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_weight="3"
-        android:background="#800080"
+        android:background="#DDA0DD"
         >
         <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
         <TextView
             android:id="@+id/textViewTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1"
             />
     </LinearLayout>
 
