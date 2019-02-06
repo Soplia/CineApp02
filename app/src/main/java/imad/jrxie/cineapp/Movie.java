@@ -1,24 +1,51 @@
 package imad.jrxie.cineapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by jrxie on 2019/2/6.
  */
 
 public class Movie
 {
+    public static String delimiter = "$$$";
+
     private String title;
     private String duration;
     private String category;
     private String press;
     private String spect;
-    private String timetable[];
 
-    public String[] getTimetable() {
-        return timetable;
+    public String picUrl;
+    public List<String> showTime;
+
+    public Movie()
+    {
+        showTime = new ArrayList<String>();
     }
 
-    public void setTimetable(String[] timetable) {
-        this.timetable = timetable;
+    /*
+    int numOfMovie = 5;
+
+    public void DownloadData()
+    {
+        for(int i = 0; i < numOfMovie; i++)
+        {
+            picUrl.add("Picture Url" + (i+1));
+            for(int j = 0; j < 3; j++)
+                showTime.add(2 * i + (j + 1) + "");
+            showTime.add(delimiter);
+        }
+    }
+    */
+
+    public List<String> getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(List<String> showTime) {
+        this.showTime = showTime;
     }
 
     public String getTitle() {
