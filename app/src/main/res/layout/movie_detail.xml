@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/movieDetailSecond">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -15,35 +16,32 @@
         >
         <ImageView
             android:id="@+id/movieDetailPic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ImageView>
     </LinearLayout>
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/movieDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        >
-
+        android:id="@+id/movieDetail3">
         <TextView
-            android:id="@+id/movieDetailD"
+            android:id="@+id/movieDetailDuration"
             android:layout_width="@dimen/weight_zero"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Duration"
             />
         <TextView
-            android:id="@+id/movieDetailC"
+            android:id="@+id/movieDetailCategory"
             android:layout_width="@dimen/weight_zero"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Category"
             />
         <TextView
-            android:id="@+id/movieDetailCo"
+            android:id="@+id/movieDetailCountry"
             android:layout_width="@dimen/weight_zero"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,7 +51,7 @@
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/movieD"
+        android:id="@+id/movieDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -61,14 +59,13 @@
         >
         <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
         <TextView
-            android:id="@+id/movieDetailDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Description:"
             android:background="#FFF"
             />
         <TextView
-            android:id="@+id/textViewDetail"
+            android:id="@+id/movieDetailDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Lorem ipsum dolor sit amet, rebum mundi similique vim no, persequeris accommodare no sea. Eu epicuri iudicabit mediocritatem eum, no alii atqui affert est. Wisi inani rationibus us"
@@ -78,7 +75,7 @@
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/movieDetail"
+        android:id="@+id/movieComment"
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_zero"
         android:layout_weight="1"

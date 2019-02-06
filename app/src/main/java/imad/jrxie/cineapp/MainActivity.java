@@ -1,6 +1,7 @@
 package imad.jrxie.cineapp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 
 
@@ -24,7 +28,7 @@ public class MainActivity extends Activity
     private TextView mCategory;//item.xml里的TextView：textViewDetail
     private TextView mpStar;//item.xml里的TextView：textViewTime
     private TextView msStar;//item.xml里的TextView：textViewDetail
-    //private TextView mShowtime;//item.xml里的TextView：textViewTime
+    private TextView mShowtime;//item.xml里的TextView：textViewTime
 
     private ListView lv;//activity_main.xml里的ListView
     private BaseAdapter adapter;//要实现的类
@@ -37,7 +41,7 @@ public class MainActivity extends Activity
     public void InitMovieData()
     {
         //模拟数据库
-        for (int i = 1; i < 5; i++)
+        for (int i = 1; i < 8; i++)
         {
             Movie mv = new Movie();//给实体类赋值
 
@@ -89,7 +93,6 @@ public class MainActivity extends Activity
                     view = convertView;
                     //Log.d(TAG,"有缓存，不需要重新生成: " + position);
                 }
-
                 mTitle = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
                 mTitle.setText(movieList.get(position).getTitle());//设置参数
 
@@ -102,11 +105,8 @@ public class MainActivity extends Activity
                 mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
                 mpStar.setText(movieList.get(position).getPress());//设置参数
 
-                msStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
+                msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);//找到textViewTime
                 msStar.setText(movieList.get(position).getSpect());//设置参数
-
-                //mShowtime = (TextView) view.findViewById(R.id.textViewTime);//找到textViewTime
-                //mShowtime.setText("19:00");//设置参数
 
                 ivBasicImage = (ImageView)view.findViewById(R.id.movieDetailLeftPic);
                 Picasso.with(MainActivity.this)
@@ -116,14 +116,14 @@ public class MainActivity extends Activity
                         .error(R.drawable.ic_launcher_background)
                         .into(ivBasicImage);
 
-                LinearLayout showTimeL = (LinearLayout)view.findViewById(R.id.movieTime);
+                StringBuilder sb = new StringBuilder();
                 for(int i = 0 ; i < movieList.get(position).showTime.size(); i++)
                 {
-                    TextView tv = new TextView(MainActivity.this); // 普通聊天对话
-                    tv.setText(movieList.get(position).showTime.get(i));
-                    Log.d(TAG, tv.getText().toString());
-                    showTimeL.addView(tv);
+                    sb.append(movieList.get(position).showTime.toString());
                 }
+
+                mShowtime = (TextView) view.findViewById(R.id.textViewTime);//找到textViewDetail
+                mShowtime.setText(sb.toString());//设置参数
 
                 return view;
             }
@@ -145,27 +145,42 @@ public class MainActivity extends Activity
 
         lv.setAdapter(adapter);
 
-        /*
+
         //获取当前ListView点击的行数，并且得到该数据
-        //获取当前ListView点击的行数，并且得到该数据
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
+            //Position 代表了每个item的序号,从0开始.
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                tv1 = (TextView) view.findViewById(R.id.Textviewname);//找到Textviewname
-                String str = tv1.getText().toString();//得到数据
-                Toast.makeText(MainActivity.this, "" + str, Toast.LENGTH_SHORT).show();//显示数据
-                Intent it = new Intent(MainActivity.this, list0.class); //
+                Intent it = new Intent(MainActivity.this, MovieActivity.class); //
                 Bundle b = new Bundle();
-                b.putString("we",str);  //string
-                // b.putSerializable("dd",str);
-                // it.putExtra("str_1",str);
+
+                mTitle = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
+                b.putString("title", mTitle.getText().toString());
+
+                mDuration = (TextView) view.findViewById(R.id.movieDetailRightD);//找到textViewDetail
+                b.putString("duration", mDuration.getText().toString());
+
+                mCategory = (TextView) view.findViewById(R.id.movieDetailRightC);//找到textViewDetail
+                b.putString("category", mCategory.getText().toString());
+
+                mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewDetail
+                b.putString("press", mpStar.getText().toString());
+
+                msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);
+                b.putString("spect", msStar.getText().toString());
+
+                b.putString("link", imageUri);
+                b.putString("description", "Hello World");
+                b.putString("country", "France");
+
                 it.putExtras(b);
                 startActivity(it);
             }
         });
-        */
+
     }
 
 
