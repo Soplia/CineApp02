@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -18,14 +19,40 @@ import com.squareup.picasso.Picasso;
 
 public class MainActivity extends Activity
 {
-    private TextView tv1;//item.xml里的TextView：textViewDetail
-    private TextView tv2;//item.xml里的TextView：textViewTime
+    private TextView mTitle;//item.xml里的TextView：textViewDetail
+    private TextView mDuration;//item.xml里的TextView：textViewTime
+    private TextView mCategory;//item.xml里的TextView：textViewDetail
+    private TextView mpStar;//item.xml里的TextView：textViewTime
+    private TextView msStar;//item.xml里的TextView：textViewDetail
+    //private TextView mShowtime;//item.xml里的TextView：textViewTime
+
     private ListView lv;//activity_main.xml里的ListView
     private BaseAdapter adapter;//要实现的类
     private ImageView ivBasicImage;
-    private List<User> userList = new ArrayList<User>();//实体类
+    /************************************************************/
     private String imageUri = "https://ws3.sinaimg.cn/large/006tNc79gy1fzl6w3xzgaj308w08vwf2.jpg";
     public String TAG = "MainActivity";
+    private List<Movie> movieList = new ArrayList<Movie>();//实体类
+
+    public void InitMovieData()
+    {
+        //模拟数据库
+        for (int i = 1; i < 5; i++)
+        {
+            Movie mv = new Movie();//给实体类赋值
+
+            mv.setTitle("Movie" + i);
+            mv.setDuration(2 + i + "H");
+            mv.setCategory("Love" + i);
+            mv.setPress(i + "star");
+            mv.setSpect(i + "star");
+
+            for (int j = 0; j < 3; j++)
+                mv.showTime.add(i * 2 + j + "");
+
+            movieList.add(mv);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,14 +62,7 @@ public class MainActivity extends Activity
 
         lv = (ListView) findViewById(R.id.listView1);
 
-        //模拟数据库
-        for (int i = 0; i < 5; i++)
-        {
-            User ue = new User();//给实体类赋值
-            ue.setName("小米"+ (i + 1));
-            ue.setAge("18");
-            userList.add(ue);
-        }
+        InitMovieData();
 
         adapter = new BaseAdapter()
         {
@@ -50,7 +70,7 @@ public class MainActivity extends Activity
             public int getCount()
             {
                 // TODO Auto-generated method stub
-                return userList.size();//数目
+                return movieList.size();
             }
 
             @Override
@@ -70,21 +90,41 @@ public class MainActivity extends Activity
                     //Log.d(TAG,"有缓存，不需要重新生成: " + position);
                 }
 
-                tv1 = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
-                tv1.setText(userList.get(position).getName());//设置参数
+                mTitle = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
+                mTitle.setText(movieList.get(position).getTitle());//设置参数
 
-                tv2 = (TextView) view.findViewById(R.id.textViewTime);//找到textViewTime
-                tv2.setText(userList.get(position).getAge());//设置参数
+                mDuration = (TextView) view.findViewById(R.id.movieDetailRightD);//找到textViewTime
+                mDuration.setText(movieList.get(position).getDuration());//设置参数
+
+                mCategory = (TextView) view.findViewById(R.id.movieDetailRightC);//找到textViewDetail
+                mCategory.setText(movieList.get(position).getCategory());//设置参数
+
+                mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
+                mpStar.setText(movieList.get(position).getPress());//设置参数
+
+                msStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
+                msStar.setText(movieList.get(position).getSpect());//设置参数
+
+                //mShowtime = (TextView) view.findViewById(R.id.textViewTime);//找到textViewTime
+                //mShowtime.setText("19:00");//设置参数
 
                 ivBasicImage = (ImageView)view.findViewById(R.id.movieDetailLeftPic);
-                //Picasso.with(this).load(imageUri1).resize(50, 50).error(R.drawable.ic_launcher_background).into(ivBasicImage);
-
                 Picasso.with(MainActivity.this)
                         .load(imageUri)
                         .resize(50, 50)
                         .centerCrop()
                         .error(R.drawable.ic_launcher_background)
                         .into(ivBasicImage);
+
+                LinearLayout showTimeL = (LinearLayout)view.findViewById(R.id.movieTime);
+                for(int i = 0 ; i < movieList.get(position).showTime.size(); i++)
+                {
+                    TextView tv = new TextView(MainActivity.this); // 普通聊天对话
+                    tv.setText(movieList.get(position).showTime.get(i));
+                    Log.d(TAG, tv.getText().toString());
+                    showTimeL.addView(tv);
+                }
+
                 return view;
             }
 
