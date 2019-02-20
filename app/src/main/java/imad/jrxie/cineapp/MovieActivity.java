@@ -3,7 +3,6 @@ package imad.jrxie.cineapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +25,7 @@ public class MovieActivity extends Activity
     private Bundle myBundle;
 
     private String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
+
 
     private JCVideoPlayerStandard player;
 
@@ -71,7 +71,7 @@ public class MovieActivity extends Activity
 
         Init();
 
-        Log.d(TAG, myBundle.getString("videoUrl"));
+        //Log.d(TAG, myBundle.getString("videoUrl"));
 
         //boolean setUp = player.setUp(myBundle.getString("videoUrl"), JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
 
@@ -86,7 +86,7 @@ public class MovieActivity extends Activity
         //直接进入全屏
         //player.startFullscreen(this, JCVideoPlayerStandard.class, videoUrl, "");
         //模拟用户点击开始按钮，NORMAL状态下点击开始播放视频，播放中点击暂停视频
-        //player.startButton.performClick();
+        player.startButton.performClick();
     }
 
     public void onBackPressed() {

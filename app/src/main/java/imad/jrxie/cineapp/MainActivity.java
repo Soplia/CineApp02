@@ -2,6 +2,7 @@ package imad.jrxie.cineapp;
 
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import java.text.DecimalFormat;
@@ -141,7 +142,6 @@ public class MainActivity extends Activity
 
                     movieList.add(mv);
                 }
-
 
                 //网络请求需要时间,所以需要把设置放在这个的后面
                 SetAdapter();
@@ -286,9 +286,15 @@ public class MainActivity extends Activity
             public void onClick(View v)
             {
                 // TODO Auto-generated method stub
+
+                /*
                 Intent it = new Intent(MainActivity.this, TheaterMap.class);
                 startActivity(it);
                 Log.d(TAG, "ButtonClicked");
+                */
+
+                String Video_Id = "QUV-6UxwlZE&list=PLG8vJQBHlyoErKrozK21hyZestXaj18AT&index=22";
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("Vnd.youtube://"+Video_Id)));
             }
         });
     }
