@@ -52,6 +52,8 @@ public class TheaterMap extends FragmentActivity
                     .title(String.valueOf(R.string.TopTitle)));
             //移动摄像头
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleLatLng, 13));
+
+            googleMap.setMyLocationEnabled(true);
         }
     };
 }

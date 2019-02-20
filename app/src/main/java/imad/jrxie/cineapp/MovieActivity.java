@@ -1,8 +1,11 @@
 package imad.jrxie.cineapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -71,24 +74,38 @@ public class MovieActivity extends Activity
 
         Init();
 
+        player.startButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Log.d(TAG, myBundle.getString("videoUrl"));
+                intent.setData(Uri.parse(myBundle.getString("videoUrl")));
+                startActivity(intent);
+
+
+            }
+        });
+
         //Log.d(TAG, myBundle.getString("videoUrl"));
 
         //boolean setUp = player.setUp(myBundle.getString("videoUrl"), JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
 
-        boolean setUp = player.setUp(("videoUrl"), JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
-
-        if (setUp)
-        {
-            Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
-        }
+        //if (setUp)
+        //{
+        Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
+       // }
 
 
         //直接进入全屏
         //player.startFullscreen(this, JCVideoPlayerStandard.class, videoUrl, "");
         //模拟用户点击开始按钮，NORMAL状态下点击开始播放视频，播放中点击暂停视频
-        player.startButton.performClick();
+        //player.startButton.performClick();
     }
 
+    /*
     public void onBackPressed() {
         if (JCVideoPlayer.backPress()) {
             return;
@@ -101,6 +118,6 @@ public class MovieActivity extends Activity
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
     }
-
+    */
 
 }
