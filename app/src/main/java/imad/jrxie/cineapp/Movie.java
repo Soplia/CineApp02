@@ -18,6 +18,7 @@ public class Movie
     private String spect;
 
     public String picUrl;
+    public String videoUrl;
     public List<String> showTime;
 
     public Movie()
@@ -25,6 +26,15 @@ public class Movie
         showTime = new ArrayList<String>();
     }
 
+    public void setPicUrl(String url)
+    {
+        this.picUrl = url;
+    }
+
+    public void setVideoUrl(String url)
+    {
+        this.videoUrl = url;
+    }
     /*
     int numOfMovie = 5;
 

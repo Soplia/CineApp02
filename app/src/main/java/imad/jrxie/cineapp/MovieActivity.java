@@ -3,10 +3,17 @@ package imad.jrxie.cineapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
+import imad.jrxie.cineapp.media.IjkVideoView;
+
+//import com.bumptech.glide.Glide;
+
+//import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+//import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
+
 
 public class MovieActivity extends Activity
 {
@@ -17,15 +24,28 @@ public class MovieActivity extends Activity
     private TextView mpStar;//item.xml里的TextView：textViewTime
     private TextView msStar;//item.xml里的TextView：textViewDetail
     private TextView mDescription;//item.xml里的TextView：textViewTime
-    private ImageView ivBasicImage;
 
     private Intent myIntent;
     private Bundle myBundle;
+
+    private String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
+
+    //private JCVideoPlayerStandard player;
+    private IjkVideoView player;
+    private boolean mBackPressed;
+
 
     public void Init()
     {
         myIntent = getIntent();
         myBundle = myIntent.getExtras();
+
+        player = (IjkVideoView) findViewById(R.id.videoPlayer);
+        IjkMediaPlayer.loadLibrariesOnce(null);
+        IjkMediaPlayer.native_profileBegin("libijkplayer.so");
+
+
+        //player = (JCVideoPlayerStandard) findViewById(R.id.videoPlayer);
 
         //这个地方需要重点注意，id是全局唯一的，即使是在两个不同的布局文件中也需要使用不同的ID
         //在设置文字的时候不要使用view来获取相应的控件直接使用findViewById即可
@@ -51,13 +71,6 @@ public class MovieActivity extends Activity
         mDescription = (TextView) findViewById(R.id.movieDetailDesc);
         mDescription.setText(myBundle.getString("description" ));//设置参数
 
-        ivBasicImage = (ImageView)findViewById(R.id.movieDetailPic);
-        Picasso.with(MovieActivity.this)
-                .load(myBundle.getString("link"))
-                .resize(50, 50)
-                .centerCrop()
-                .error(R.drawable.ic_launcher_background)
-                .into(ivBasicImage);
 
     }
 
@@ -68,5 +81,57 @@ public class MovieActivity extends Activity
         setContentView(R.layout.movie_detail);
 
         Init();
+
+        Log.d(TAG, myBundle.getString("videoUrl"));
+
+        if (myBundle.getString("videoUrl") != null) {
+            player.setVideoPath(myBundle.getString("videoUrl"));
+        }
+        //player.start();
+        /*
+        boolean setUp = player.setUp(myBundle.getString("videoUrl"), JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
+        if (setUp)
+        {
+            Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
+        }
+        */
+
+        //直接进入全屏
+        //player.startFullscreen(this, JCVideoPlayerStandard.class, videoUrl, "");
+        //模拟用户点击开始按钮，NORMAL状态下点击开始播放视频，播放中点击暂停视频
+        //player.startButton.performClick();
     }
+    public void onBackPressed() {
+        mBackPressed = true;
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mBackPressed || !player.isBackgroundPlayEnabled()) {
+            player.stopPlayback();
+            player.release(true);
+            player.stopBackgroundPlay();
+        } else {
+            player.enterBackground();
+        }
+        IjkMediaPlayer.native_profileEnd();
+    }
+/*
+    public void onBackPressed() {
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JCVideoPlayer.releaseAllVideos();
+    }
+*/
+
 }

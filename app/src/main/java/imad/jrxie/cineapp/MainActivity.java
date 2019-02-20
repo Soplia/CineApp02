@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import imad.jrxie.cineapp.model.Info;
+import imad.jrxie.cineapp.model.Trailer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,11 +44,11 @@ public class MainActivity extends Activity
     private ListView lv;//activity_main.xml里的ListView
     private BaseAdapter adapter;//要实现的类
     private ImageView ivBasicImage;
+    private Button buttonMap;
 
     DecimalFormat doubleFormat=new DecimalFormat(".##");
 
     /************************************************************/
-    //private String imageUri = "https://ws3.sinaimg.cn/large/006tNc79gy1fzl6w3xzgaj308w08vwf2.jpg";
     public String TAG = "MainActivity";
     private List<Movie> movieList = new ArrayList<Movie>();//实体类
 
@@ -96,6 +98,7 @@ public class MainActivity extends Activity
                     mv.setCategory(response.body().movieShowtimes.get(i).onShow.movie.genre.get(0).name);
 
                     String pressTemp1 = response.body().movieShowtimes.get(i).onShow.movie.statistics.pressRating;
+
                     if (pressTemp1 != null)
                     {
                         double pressTemp = Double.parseDouble(pressTemp1);
@@ -117,13 +120,26 @@ public class MainActivity extends Activity
 
                     mv.showTime.add(response.body().movieShowtimes.get(i).display);
 
-                    /*
-                    String videoTemp = response.body().movieShowtimes.get(i).onShow.movie.trailer.href;
-                    if (videoTemp != null)
-                        mv.setVideoUrl(videoTemp);
+                    Trailer temp = response.body().movieShowtimes.get(i).onShow.movie.trailer;
+                    if(temp != null)
+                    {
+                        String videoTemp = temp.href;
+                        if (videoTemp != null)
+                        {
+                            mv.setVideoUrl(videoTemp);
+                            //Log.d(TAG, "vidoeTemp is not null: " + videoTemp);
+                        }
+
+                        else
+                        {
+                            mv.setVideoUrl("https://www.youtube.com/watch?v=QUV-6UxwlZE&list=PLG8vJQBHlyoErKrozK21hyZestXaj18AT&index=22");
+                            //Log.d(TAG,"videoTemp is null");
+                        }
+                    }
                     else
                         mv.setVideoUrl("https://www.youtube.com/watch?v=QUV-6UxwlZE&list=PLG8vJQBHlyoErKrozK21hyZestXaj18AT&index=22");
-                    */
+
+
                     movieList.add(mv);
                 }
 
@@ -131,7 +147,7 @@ public class MainActivity extends Activity
                 //网络请求需要时间,所以需要把设置放在这个的后面
                 SetAdapter();
 
-                Log.d(TAG, "NumberofMovieList:" + movieList.size());
+                SetButtonListener();
             }
 
             //请求失败时回调
@@ -188,7 +204,7 @@ public class MainActivity extends Activity
                 ivBasicImage = (ImageView)view.findViewById(R.id.movieDetailLeftPic);
                 Picasso.with(MainActivity.this)
                         .load(movieList.get(position).picUrl)
-                        .resize(50, 50)
+                        .resize(200, 200)
                         .centerCrop()
                         .error(R.drawable.ic_launcher_background)
                         .into(ivBasicImage);
@@ -258,6 +274,22 @@ public class MainActivity extends Activity
 
                 it.putExtras(b);
                 startActivity(it);
+            }
+        });
+    }
+
+
+    public void SetButtonListener()
+    {
+        buttonMap = (Button) findViewById(R.id.buttonMap);
+        buttonMap.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                // TODO Auto-generated method stub
+                Intent it = new Intent(MainActivity.this, TheaterMap.class);
+                startActivity(it);
+                Log.d(TAG, "ButtonClicked");
             }
         });
     }
