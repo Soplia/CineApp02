@@ -1,7 +1,12 @@
 package imad.jrxie.cineapp;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,13 +52,24 @@ public class TheaterMap extends FragmentActivity
         @Override
         public void onMapReady(GoogleMap googleMap)
         {
-            //添加标记
-            googleMap.addMarker(new MarkerOptions().position(googleLatLng)
-                    .title(String.valueOf(R.string.TopTitle)));
-            //移动摄像头
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleLatLng, 13));
+            if (ContextCompat.checkSelfPermission(TheaterMap.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                //申请WRITE_EXTERNAL_STORAGE权限
+                ActivityCompat.requestPermissions(TheaterMap.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0x01);
+            }
+            else
+            {
+                googleMap.addMarker(new MarkerOptions().position(googleLatLng)
+                        .title(String.valueOf(R.string.TopTitle)));
+                //移动摄像头
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleLatLng, 13));
 
-            googleMap.setMyLocationEnabled(true);
+                googleMap.setMyLocationEnabled(true);
+
+            }
         }
+
     };
+
+
 }
