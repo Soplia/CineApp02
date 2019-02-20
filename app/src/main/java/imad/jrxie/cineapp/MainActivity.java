@@ -16,15 +16,14 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import imad.jrxie.cineapp.model.Info;
 import imad.jrxie.cineapp.model.Trailer;
+import imad.jrxie.cineapp.TheaterMap;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

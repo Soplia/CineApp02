@@ -14,10 +14,19 @@
         android:layout_weight="4"
         android:background="#800080"
         >
-        <ImageView
-            android:id="@+id/movieDetailPic"
+
+        <fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard
+            android:id="@+id/videoPlayer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ImageView>
+            android:layout_height="match_parent" />
+        <!--
+
+           <tv.danmaku.ijk.media.widget.media.IjkVideoView
+               android:id="@+id/videoPlayer"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_gravity="center"/>
+   -->
     </LinearLayout>
 
 
