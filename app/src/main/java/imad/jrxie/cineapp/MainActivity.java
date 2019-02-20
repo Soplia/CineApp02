@@ -2,7 +2,7 @@ package imad.jrxie.cineapp;
 
 
 import android.content.Intent;
-import android.net.Uri;
+import android.media.Rating;
 import android.os.Bundle;
 
 import java.text.DecimalFormat;
@@ -18,13 +18,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import imad.jrxie.cineapp.model.Info;
 import imad.jrxie.cineapp.model.Trailer;
-import imad.jrxie.cineapp.TheaterMap;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +45,8 @@ public class MainActivity extends Activity
     private BaseAdapter adapter;//要实现的类
     private ImageView ivBasicImage;
     private Button buttonMap;
-
+    private RatingBar pRatingBar;
+    private RatingBar sRatingBar;
     DecimalFormat doubleFormat=new DecimalFormat(".##");
 
     /************************************************************/
@@ -105,7 +106,7 @@ public class MainActivity extends Activity
                         mv.setPress(doubleFormat.format(pressTemp));
                     }
                     else
-                        mv.setPress("N");
+                        mv.setPress("-1");
 
 
                     String spectTemp1 = response.body().movieShowtimes.get(i).onShow.movie.statistics.userRating;
@@ -115,7 +116,7 @@ public class MainActivity extends Activity
                         mv.setSpect(doubleFormat.format(spectTemp));
                     }
                     else
-                        mv.setSpect("N");
+                        mv.setSpect("-1");
 
 
                     mv.showTime.add(response.body().movieShowtimes.get(i).display);
@@ -194,11 +195,19 @@ public class MainActivity extends Activity
                 mCategory = (TextView) view.findViewById(R.id.movieDetailRightC);//找到textViewDetail
                 mCategory.setText(movieList.get(position).getCategory());//设置参数
 
-                mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
-                mpStar.setText(movieList.get(position).getPress());//设置参数
+                //mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
+                //mpStar.setText(movieList.get(position).getPress());//设置参数
 
-                msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);//找到textViewTime
-                msStar.setText(movieList.get(position).getSpect());//设置参数
+                Log.d(TAG,movieList.get(position).getPress());
+                pRatingBar  = (RatingBar)view.findViewById(R.id.movieDetailRightPstar);
+
+                pRatingBar.setRating(Float.parseFloat(movieList.get(position).getPress()));
+
+                //msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);//找到textViewTime
+                //msStar.setText(movieList.get(position).getSpect());//设置参数
+
+                sRatingBar  = (RatingBar)view.findViewById(R.id.movieDetailRightSstar);
+                sRatingBar.setRating(Float.parseFloat(movieList.get(position).getSpect()));
 
                 ivBasicImage = (ImageView)view.findViewById(R.id.movieDetailLeftPic);
                 Picasso.with(MainActivity.this)
@@ -259,11 +268,11 @@ public class MainActivity extends Activity
                 mCategory = (TextView) view.findViewById(R.id.movieDetailRightC);//找到textViewDetail
                 b.putString("category", mCategory.getText().toString());
 
-                mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewDetail
-                b.putString("press", mpStar.getText().toString());
+                pRatingBar = (RatingBar) view.findViewById(R.id.movieDetailRightPstar);//找到textViewDetail
+                b.putString("press", String.valueOf(pRatingBar.getRating()));
 
-                msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);
-                b.putString("spect", msStar.getText().toString());
+                sRatingBar = (RatingBar) view.findViewById(R.id.movieDetailRightSstar);
+                b.putString("spect", String.valueOf(sRatingBar.getRating()));
 
                 b.putString("picUrl", movieList.get(position).picUrl);
                 b.putString("videoUrl", movieList.get(position).videoUrl);

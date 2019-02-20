@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +27,8 @@ public class MovieActivity extends Activity
 
     private Intent myIntent;
     private Bundle myBundle;
-
+    private RatingBar pRatingBar;
+    private RatingBar sRatingBar;
     private String videoUrl = "http://gslb.miaopai.com/stream/ed5HCfnhovu3tyIQAiv60Q__.mp4";
 
 
@@ -54,11 +56,19 @@ public class MovieActivity extends Activity
         mDescription = (TextView) findViewById(R.id.movieDetailDesc);//找到textViewTime
         //mDescription.setText(myBundle.getString("mDescription" ));//设置参数
 
-        msStar = (TextView) findViewById(R.id.movieDetailRightSstar);//找到textViewTime
-        msStar.setText(myBundle.getString("spect" ));//设置参数
+        pRatingBar  = (RatingBar)findViewById(R.id.movieDetailRightPstar);
 
-        mpStar = (TextView) findViewById(R.id.movieDetailRightPstar);//找到textViewTime
-        mpStar.setText(myBundle.getString("press" ));//设置参数
+        pRatingBar.setRating(Float.parseFloat(myBundle.getString("spect" )));
+
+
+        sRatingBar  = (RatingBar)findViewById(R.id.movieDetailRightSstar);
+        sRatingBar.setRating(Float.parseFloat(myBundle.getString("press" )));
+
+        //msStar = (TextView) findViewById(R.id.movieDetailRightSstar);//找到textViewTime
+        //msStar.setText(myBundle.getString("spect" ));//设置参数
+
+        //mpStar = (TextView) findViewById(R.id.movieDetailRightPstar);//找到textViewTime
+        //mpStar.setText(myBundle.getString("press" ));//设置参数
 
         mDescription = (TextView) findViewById(R.id.movieDetailDesc);
         mDescription.setText(myBundle.getString("description" ));//设置参数

@@ -98,13 +98,15 @@
                 android:layout_weight="1"
                 android:text="Press"
                 />
-            <TextView
+            <RatingBar
                 android:id="@+id/movieDetailRightPstar"
+                android:isIndicator="true"
                 android:layout_width="@dimen/weight_zero"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Pstar"
-                />
+                android:layout_weight="4"
+
+                android:numStars="5"
+                android:rating="1.5" />
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -122,13 +124,14 @@
                 android:layout_weight="1"
                 android:text="Spect"
                 />
-            <TextView
+            <RatingBar
                 android:id="@+id/movieDetailRightSstar"
+                android:isIndicator="true"
                 android:layout_width="@dimen/weight_zero"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Sstar"
-                />
+                android:layout_weight="4"
+                android:numStars="5"
+                android:rating="1.5" />
         </LinearLayout>
 
     </LinearLayout>
