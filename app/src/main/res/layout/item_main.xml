@@ -54,14 +54,16 @@
                 <TextView
                     android:id="@+id/movieDetailRightD"
                     android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="Duration" />
 
                 <TextView
                     android:id="@+id/movieDetailRightC"
                     android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="Category" />
             </LinearLayout>
@@ -76,9 +78,10 @@
 
                 <TextView
                     android:id="@+id/movieDetailRightPress"
-                    android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="Press" />
 
                 <!--
@@ -91,13 +94,13 @@
                 -->
                 <RatingBar
                     android:id="@+id/movieDetailRightPstar"
-                    android:isIndicator="true"
-                    android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
-
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_marginLeft="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:numStars="5"
-                    android:rating="1.5" />
+                    android:rating="1" />
 
             </LinearLayout>
 
@@ -111,19 +114,21 @@
 
                 <TextView
                     android:id="@+id/movieDetailRightSpect"
-                    android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:text="Spect" />
 
                 <RatingBar
                     android:id="@+id/movieDetailRightSstar"
-                    android:isIndicator="true"
-                    android:layout_width="@dimen/weight_zero"
-                    android:layout_height="match_parent"
-                    android:layout_weight="4"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_marginLeft="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:numStars="5"
-                    android:rating="1.5" />
+                    android:rating="1" />
 
             </LinearLayout>
 

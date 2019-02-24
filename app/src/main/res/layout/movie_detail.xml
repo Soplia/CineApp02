@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:id="@+id/movieDetailSecond">
 
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movieTime"
         android:layout_width="match_parent"
@@ -42,39 +41,7 @@
             android:layout_weight="1"
             android:text="Category"
             />
-        <TextView
-            android:id="@+id/movieDetailCountry"
-            android:layout_width="@dimen/weight_zero"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Country"
-            />
     </LinearLayout>
-
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/movieDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#800080"
-        >
-        <!-- 下面两个是用来给  activity_main.xml里的ListView赋值,-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description:"
-            android:background="#FFF"
-            />
-        <TextView
-            android:id="@+id/movieDetailDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lorem ipsum dolor sit amet, rebum mundi similique vim no, persequeris accommodare no sea. Eu epicuri iudicabit mediocritatem eum, no alii atqui affert est. Wisi inani rationibus us"
-            android:background="#FFF"
-            />
-    </LinearLayout>
-
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movieComment"
@@ -93,20 +60,21 @@
             android:background="#950ff0">
             <TextView
                 android:id="@+id/movieDetailRightPress"
-                android:layout_width="@dimen/weight_zero"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_marginLeft="5dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="Press"
                 />
             <RatingBar
                 android:id="@+id/movieDetailRightPstar"
-                android:isIndicator="true"
-                android:layout_width="@dimen/weight_zero"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_marginLeft="5dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:numStars="5"
-                android:rating="1.5" />
+                android:rating="1" />
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -119,19 +87,21 @@
             >
             <TextView
                 android:id="@+id/movieDetailRightSpect"
-                android:layout_width="@dimen/weight_zero"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_marginLeft="5dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="Spect"
                 />
             <RatingBar
                 android:id="@+id/movieDetailRightSstar"
-                android:isIndicator="true"
-                android:layout_width="@dimen/weight_zero"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_marginLeft="5dip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:numStars="5"
-                android:rating="1.5" />
+                android:rating="1" />
         </LinearLayout>
 
     </LinearLayout>

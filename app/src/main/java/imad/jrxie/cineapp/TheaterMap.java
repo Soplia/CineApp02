@@ -1,6 +1,14 @@
+/**
+ * @file TheaterMap
+ * @author jrxie
+ * @date 2019/2/24 10:22 PM
+ * @description A map activity to show the position of the Theater
+*/
+
 package imad.jrxie.cineapp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
@@ -16,12 +24,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 public class TheaterMap extends FragmentActivity
 {
     // Googleplex经纬度
-    private final LatLng googleLatLng = new LatLng(45.7567654, 3.1441095);
+    private LatLng googleLatLng;
     public String TAG = "MainActivity";
+    private Intent myIntent;
+    private Bundle myBundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +38,14 @@ public class TheaterMap extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theater_map);
 
+        myIntent = getIntent();
+        myBundle = myIntent.getExtras();
+
+        //Log.e(TAG, myBundle.getDouble("theater_lat") + "lat");
+        //Log.e(TAG, myBundle.getDouble("theater_long") + "long");
+
+        googleLatLng = new LatLng(myBundle.getDouble("theater_lat")
+                ,myBundle.getDouble("theater_long"));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.theaterMap);
@@ -43,8 +60,6 @@ public class TheaterMap extends FragmentActivity
             Log.d(TAG, "mapFragment is not null");
             mapFragment.getMapAsync(onMapReadyCallback);
         }
-
-
     }
 
     protected OnMapReadyCallback onMapReadyCallback = new OnMapReadyCallback()
@@ -70,6 +85,5 @@ public class TheaterMap extends FragmentActivity
         }
 
     };
-
 
 }

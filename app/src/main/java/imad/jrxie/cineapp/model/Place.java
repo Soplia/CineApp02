@@ -6,6 +6,5 @@ package imad.jrxie.cineapp.model;
 
 public class Place
 {
-    Theater theater;
-
+    public Theater theater;
 }

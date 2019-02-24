@@ -9,4 +9,6 @@ import android.webkit.GeolocationPermissions;
 public class Theater
 {
     public String name;
+    public Geoloc geoloc;
+    public TheaterPic picture;
 }

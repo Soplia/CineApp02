@@ -1,16 +1,17 @@
+/**
+ * @file MovieInfo
+ * @author jrxie
+ * @date 2019/2/24 10:20 PM
+ * @description A container for movies
+*/
+
 package imad.jrxie.cineapp;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jrxie on 2019/2/6.
- */
-
-public class Movie
+public class MovieInfo
 {
-    public static String delimiter = "$$$";
-
     private String title;
     private String duration;
     private String category;
@@ -21,7 +22,7 @@ public class Movie
     public String videoUrl;
     public List<String> showTime;
 
-    public Movie()
+    public MovieInfo()
     {
         showTime = new ArrayList<String>();
     }
@@ -35,20 +36,6 @@ public class Movie
     {
         this.videoUrl = url;
     }
-    /*
-    int numOfMovie = 5;
-
-    public void DownloadData()
-    {
-        for(int i = 0; i < numOfMovie; i++)
-        {
-            picUrl.add("Picture Url" + (i+1));
-            for(int j = 0; j < 3; j++)
-                showTime.add(2 * i + (j + 1) + "");
-            showTime.add(delimiter);
-        }
-    }
-    */
 
     public List<String> getShowTime() {
         return showTime;
@@ -97,11 +84,11 @@ public class Movie
     public void setSpect(String spect) {
         this.spect = spect;
     }
-
     @Override
     public String toString()
     {
         return "User [title=" + title + ", duration=" + duration + "]";
     }
+
 
 }

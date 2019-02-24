@@ -1,10 +1,15 @@
+/**
+ * @file MainActivity
+ * @author jrxie
+ * @date 2019/2/24 7:03 PM
+ * @description show all the avaliable movies with list, this is the main page of this app
+*/
+
 package imad.jrxie.cineapp;
 
-
 import android.content.Intent;
-import android.media.Rating;
+import android.net.Uri;
 import android.os.Bundle;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +25,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import imad.jrxie.cineapp.model.Info;
 import imad.jrxie.cineapp.model.Trailer;
 import retrofit2.Call;
@@ -31,27 +34,24 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class MainActivity extends Activity
 {
-    private TextView mTitle;//item.xml里的TextView：textViewDetail
-    private TextView mDuration;//item.xml里的TextView：textViewTime
-    private TextView mCategory;//item.xml里的TextView：textViewDetail
-    private TextView mpStar;//item.xml里的TextView：textViewTime
-    private TextView msStar;//item.xml里的TextView：textViewDetail
-    private TextView mShowtime;//item.xml里的TextView：textViewTime
-
-    private ListView lv;//activity_main.xml里的ListView
-    private BaseAdapter adapter;//要实现的类
+    private TextView mTitle;
+    private TextView mDuration;
+    private TextView mCategory;
+    private TextView mShowtime;
+    private ListView lv;
+    private BaseAdapter adapter;
     private ImageView ivBasicImage;
     private Button buttonMap;
+    private ImageView imgMap;
     private RatingBar pRatingBar;
     private RatingBar sRatingBar;
     DecimalFormat doubleFormat=new DecimalFormat(".##");
 
-    /************************************************************/
     public String TAG = "MainActivity";
-    private List<Movie> movieList = new ArrayList<Movie>();//实体类
+    private List<MovieInfo> movieList = new ArrayList<MovieInfo>();
+    public TheaterInfo myTheater;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +61,9 @@ public class MainActivity extends Activity
         RequestDatabase();
     }
 
+    /**
+     * Get information of movies from database
+     */
     public void RequestDatabase()
     {
         //创建Retrofit对象
@@ -80,34 +83,41 @@ public class MainActivity extends Activity
             //请求成功时回调
             @Override
             public void onResponse(Call<Info> call, Response<Info> response)
-            { //处理返回的数据结果, 如果是null的话,可能是body是空的,那么可能的原因就是url的格式不正确
-                //response.body().ShowContents();
+            {
+                myTheater = new TheaterInfo();
+                myTheater.setLat(response.body().place.theater.geoloc.lat);
+                myTheater.setLongitude(response.body().place.theater.geoloc.longitude);
+                myTheater.setPicUrl(response.body().place.theater.picture.href);
+
+                imgMap = (ImageView) findViewById(R.id.imgMap);
+                Picasso.with(MainActivity.this)
+                        .load(response.body().place.theater.picture.href)
+                        .resize(500, 220)
+                        .centerCrop()
+                        .error(R.drawable.ic_launcher_background)
+                        .into(imgMap);
+
+                //处理返回的数据结果, 如果是null的话,可能是body是空的,那么可能的原因就是url的格式不正确
                 //初始化电影列表
-                //InitMovieData(response);
                 int movieQuantity = response.body().movieShowtimes.size();
                 //模拟数据库
                 for (int i = 0; i < movieQuantity; i++)
                 {
-                    Movie mv = new Movie();//给实体类赋值
+                    MovieInfo mv = new MovieInfo();//给实体类赋值
                     mv.setPicUrl(response.body().movieShowtimes.get(i).onShow.movie.poster.href);
                     mv.setTitle(response.body().movieShowtimes.get(i).onShow.movie.title);
-
 
                     double duration = Double.parseDouble(response.body().movieShowtimes.get(i).onShow.movie.runtime);
                     mv.setDuration(doubleFormat.format(duration / 3600) + "H");
 
-                    mv.setCategory(response.body().movieShowtimes.get(i).onShow.movie.genre.get(0).name);
-
                     String pressTemp1 = response.body().movieShowtimes.get(i).onShow.movie.statistics.pressRating;
-
                     if (pressTemp1 != null)
                     {
                         double pressTemp = Double.parseDouble(pressTemp1);
                         mv.setPress(doubleFormat.format(pressTemp));
                     }
                     else
-                        mv.setPress("-1");
-
+                        mv.setPress(String.valueOf(R.integer.no_press));
 
                     String spectTemp1 = response.body().movieShowtimes.get(i).onShow.movie.statistics.userRating;
                     if (spectTemp1 != null)
@@ -116,11 +126,9 @@ public class MainActivity extends Activity
                         mv.setSpect(doubleFormat.format(spectTemp));
                     }
                     else
-                        mv.setSpect("-1");
-
+                        mv.setSpect(String.valueOf(R.integer.no_spect));
 
                     mv.showTime.add(response.body().movieShowtimes.get(i).display);
-
                     Trailer temp = response.body().movieShowtimes.get(i).onShow.movie.trailer;
                     if(temp != null)
                     {
@@ -130,24 +138,23 @@ public class MainActivity extends Activity
                             mv.setVideoUrl(videoTemp);
                             //Log.d(TAG, "vidoeTemp is not null: " + videoTemp);
                         }
-
                         else
                         {
                             mv.setVideoUrl("https://www.youtube.com/watch?v=QUV-6UxwlZE&list=PLG8vJQBHlyoErKrozK21hyZestXaj18AT&index=22");
+                            //mv.setVideoUrl(String.valueOf(R.string.video_url));
                             //Log.d(TAG,"videoTemp is null");
                         }
                     }
                     else
                         mv.setVideoUrl("https://www.youtube.com/watch?v=QUV-6UxwlZE&list=PLG8vJQBHlyoErKrozK21hyZestXaj18AT&index=22");
-
+                    //mv.setVideoUrl(String.valueOf(R.string.video_url));
 
                     movieList.add(mv);
                 }
 
                 //网络请求需要时间,所以需要把设置放在这个的后面
                 SetAdapter();
-
-                SetButtonListener();
+                SetImgListener();
             }
 
             //请求失败时回调
@@ -159,6 +166,9 @@ public class MainActivity extends Activity
         });
     }
 
+    /**
+     * Set list and Set list item clicked listener
+     */
     public void SetAdapter()
     {
         adapter = new BaseAdapter()
@@ -195,16 +205,9 @@ public class MainActivity extends Activity
                 mCategory = (TextView) view.findViewById(R.id.movieDetailRightC);//找到textViewDetail
                 mCategory.setText(movieList.get(position).getCategory());//设置参数
 
-                //mpStar = (TextView) view.findViewById(R.id.movieDetailRightPstar);//找到textViewTime
-                //mpStar.setText(movieList.get(position).getPress());//设置参数
-
                 Log.d(TAG,movieList.get(position).getPress());
                 pRatingBar  = (RatingBar)view.findViewById(R.id.movieDetailRightPstar);
-
                 pRatingBar.setRating(Float.parseFloat(movieList.get(position).getPress()));
-
-                //msStar = (TextView) view.findViewById(R.id.movieDetailRightSstar);//找到textViewTime
-                //msStar.setText(movieList.get(position).getSpect());//设置参数
 
                 sRatingBar  = (RatingBar)view.findViewById(R.id.movieDetailRightSstar);
                 sRatingBar.setRating(Float.parseFloat(movieList.get(position).getSpect()));
@@ -286,22 +289,51 @@ public class MainActivity extends Activity
         });
     }
 
-
-    public void SetButtonListener()
+    /**
+     * @description Go to the TheaterMap activity
+     */
+    public void SetImgListener()
     {
+        imgMap.setOnClickListener(
+                new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        // TODO Auto-generated method stub
+                        Intent it = new Intent(MainActivity.this, TheaterMap.class);
+                        Bundle b = new Bundle();
+
+                        b.putDouble("theater_lat", myTheater.getLat());
+                        b.putDouble("theater_long", myTheater.getLongitude());
+                        b.putString("theater_pic", myTheater.getPicUrl());
+
+                        it.putExtras(b);
+                        startActivity(it);
+                        Log.e(TAG, "ButtonClicked");
+                    }
+                }
+        );
+        /*
         buttonMap = (Button) findViewById(R.id.buttonMap);
+
         buttonMap.setOnClickListener(new View.OnClickListener()
         {
             public void onClick(View v)
             {
                 // TODO Auto-generated method stub
                 Intent it = new Intent(MainActivity.this, TheaterMap.class);
+                Bundle b = new Bundle();
+
+                b.putDouble("theater_lat", myTheater.getLat());
+                b.putDouble("theater_long", myTheater.getLongitude());
+                b.putString("theater_pic", myTheater.getPicUrl());
+
+                it.putExtras(b);
                 startActivity(it);
-                Log.d(TAG, "ButtonClicked");
-
-
+                Log.e(TAG, "ButtonClicked");
             }
         });
+        */
     }
 
 }
