@@ -8,23 +8,24 @@
 package imad.jrxie.cineapp;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 import imad.jrxie.cineapp.model.Info;
 import imad.jrxie.cineapp.model.Trailer;
@@ -33,8 +34,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import android.support.v7.widget.Toolbar;
 
-public class MainActivity extends Activity
+public class MainActivity extends AppCompatActivity
 {
     private TextView mTitle;
     private TextView mDuration;
@@ -43,7 +45,7 @@ public class MainActivity extends Activity
     private ListView lv;
     private BaseAdapter adapter;
     private ImageView ivBasicImage;
-    private Button buttonMap;
+    //private Button buttonMap;
     private ImageView imgMap;
     private RatingBar pRatingBar;
     private RatingBar sRatingBar;
@@ -52,7 +54,7 @@ public class MainActivity extends Activity
     public String TAG = "MainActivity";
     private List<MovieInfo> movieList = new ArrayList<MovieInfo>();
     public TheaterInfo myTheater;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -88,7 +90,7 @@ public class MainActivity extends Activity
                 myTheater.setLat(response.body().place.theater.geoloc.lat);
                 myTheater.setLongitude(response.body().place.theater.geoloc.longitude);
                 myTheater.setPicUrl(response.body().place.theater.picture.href);
-
+                /*
                 imgMap = (ImageView) findViewById(R.id.imgMap);
                 Picasso.with(MainActivity.this)
                         .load(response.body().place.theater.picture.href)
@@ -96,7 +98,7 @@ public class MainActivity extends Activity
                         .centerCrop()
                         .error(R.drawable.ic_launcher_background)
                         .into(imgMap);
-
+                */
                 //处理返回的数据结果, 如果是null的话,可能是body是空的,那么可能的原因就是url的格式不正确
                 //初始化电影列表
                 int movieQuantity = response.body().movieShowtimes.size();
@@ -154,7 +156,8 @@ public class MainActivity extends Activity
 
                 //网络请求需要时间,所以需要把设置放在这个的后面
                 SetAdapter();
-                SetImgListener();
+                //SetImgListener();
+                InitToolbar();
             }
 
             //请求失败时回调
@@ -164,6 +167,47 @@ public class MainActivity extends Activity
                 Log.e(TAG, "Connection Failed!", throwable);
             }
         });
+    }
+
+    public void InitToolbar()
+    {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    //加载菜单项
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //逻辑框架
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+
+        int id= item.getItemId();
+        switch (id)
+        {
+            case R.id.menuTheater:
+            {
+                Intent it = new Intent(MainActivity.this, TheaterPicture.class);
+                Bundle b = new Bundle();
+                b.putDouble("theater_lat", myTheater.getLat());
+                b.putDouble("theater_long", myTheater.getLongitude());
+                b.putString("theater_pic", myTheater.getPicUrl());
+                it.putExtras(b);
+                startActivity(it);
+            }
+            break;
+
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -289,51 +333,5 @@ public class MainActivity extends Activity
         });
     }
 
-    /**
-     * @description Go to the TheaterMap activity
-     */
-    public void SetImgListener()
-    {
-        imgMap.setOnClickListener(
-                new View.OnClickListener()
-                {
-                    public void onClick(View v)
-                    {
-                        // TODO Auto-generated method stub
-                        Intent it = new Intent(MainActivity.this, TheaterMap.class);
-                        Bundle b = new Bundle();
-
-                        b.putDouble("theater_lat", myTheater.getLat());
-                        b.putDouble("theater_long", myTheater.getLongitude());
-                        b.putString("theater_pic", myTheater.getPicUrl());
-
-                        it.putExtras(b);
-                        startActivity(it);
-                        Log.e(TAG, "ButtonClicked");
-                    }
-                }
-        );
-        /*
-        buttonMap = (Button) findViewById(R.id.buttonMap);
-
-        buttonMap.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                // TODO Auto-generated method stub
-                Intent it = new Intent(MainActivity.this, TheaterMap.class);
-                Bundle b = new Bundle();
-
-                b.putDouble("theater_lat", myTheater.getLat());
-                b.putDouble("theater_long", myTheater.getLongitude());
-                b.putString("theater_pic", myTheater.getPicUrl());
-
-                it.putExtras(b);
-                startActivity(it);
-                Log.e(TAG, "ButtonClicked");
-            }
-        });
-        */
-    }
 
 }

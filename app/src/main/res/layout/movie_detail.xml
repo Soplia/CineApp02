@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:id="@+id/movieDetailSecond">
 
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/movieTime"
         android:layout_width="match_parent"

@@ -26,18 +26,26 @@
                 android:text="@string/TopTitle"
                 />
     -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="2dp"
+        android:background="?attr/colorPrimary" />
+<!--
     <ImageView
         android:id="@+id/imgMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"></ImageView>
-
+        android:gravity="center"
+        android:layout_below="@+id/toolbar"></ImageView>
+-->
     <!-- ListView 由item.xml里的TextView给值 。-->
     <ListView
         android:id="@+id/listView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imgMap"
+        android:layout_below="@+id/toolbar"
         />
 
 
