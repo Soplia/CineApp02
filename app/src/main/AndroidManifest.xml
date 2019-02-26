@@ -37,7 +37,6 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".TheaterPicture" />
-        <activity android:name=".TablayoutActivity"></activity>
     </application>
 
 </manifest>
