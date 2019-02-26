@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(it);
             }
             break;
-/*
+
             case R.id.menuTablayout:
             {
                 Intent it = new Intent(MainActivity.this, TablayoutActivity.class);
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(it);
             }
             break;
-*/
+
             default:
                 break;
         }
