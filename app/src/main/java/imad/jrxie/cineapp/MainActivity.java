@@ -8,11 +8,13 @@
 package imad.jrxie.cineapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ import android.support.v7.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity
 {
+    public String TAG = "MainActivity";
     private TextView mTitle;
     private TextView mDuration;
     private TextView mCategory;
@@ -45,16 +49,15 @@ public class MainActivity extends AppCompatActivity
     private ListView lv;
     private BaseAdapter adapter;
     private ImageView ivBasicImage;
-    //private Button buttonMap;
-    private ImageView imgMap;
     private RatingBar pRatingBar;
     private RatingBar sRatingBar;
     DecimalFormat doubleFormat=new DecimalFormat(".##");
-
-    public String TAG = "MainActivity";
     private List<MovieInfo> movieList = new ArrayList<MovieInfo>();
     public TheaterInfo myTheater;
     private Toolbar toolbar;
+    private LinearLayout line1,line2,line3,line4,line5;
+    private Toolp tool;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -63,11 +66,57 @@ public class MainActivity extends AppCompatActivity
         RequestDatabase();
     }
 
+    public void SetColor(String picUrl)
+    {
+        Log.e(TAG,"picurl = " +picUrl);
+
+        Bitmap bitmap = tool.GetBitMBitmap(picUrl);
+
+        if (bitmap == null)
+        {
+            return;
+        }
+
+        Palette palette = Palette.from(bitmap).generate();
+
+        Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
+        Palette.Swatch vibrantDark = palette.getDarkVibrantSwatch();//有活力的，暗色
+        Palette.Swatch vibrantLight = palette.getLightVibrantSwatch();//有活力的，亮色
+        Palette.Swatch muted = palette.getMutedSwatch();//柔和的
+        Palette.Swatch mutedLight = palette.getLightMutedSwatch();//柔和的,亮色
+
+        if(vibrantLight != null)
+            line5.setBackgroundColor(vibrantLight.getRgb());
+        if(vibrant != null)
+        {
+            line2.setBackgroundColor(vibrant.getRgb());
+            mTitle.setTextColor(vibrant.getTitleTextColor());
+        }
+        if (muted != null)
+            line3.setBackgroundColor(muted.getRgb());
+        if (mutedLight != null)
+        {
+            line1.setBackgroundColor(mutedLight.getRgb());
+            line4.setBackgroundColor(mutedLight.getRgb());
+        }
+    }
+
+    public void InitforPalette(View view)
+    {
+        line1 = (LinearLayout) view.findViewById(R.id.movieDetail);
+        line2 = (LinearLayout) view.findViewById(R.id.movieDetailRightDC);
+        line3 = (LinearLayout) view.findViewById(R.id.movieDetailRightP);
+        line4 = (LinearLayout) view.findViewById(R.id.movieDetailRightS);
+        line5 = (LinearLayout) view.findViewById(R.id.movieTime);
+    }
+
     /**
      * Get information of movies from database
      */
     public void RequestDatabase()
     {
+        tool = new Toolp();
+
         //创建Retrofit对象
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://etudiants.openium.fr/") // 设置 网络请求 Url , 这个地方的保留了最主要的网址,需要与前面的合并
@@ -203,10 +252,21 @@ public class MainActivity extends AppCompatActivity
             }
             break;
 
+            case R.id.menuTablayout:
+            {
+                Intent it = new Intent(MainActivity.this, TablayoutActivity.class);
+                Bundle b = new Bundle();
+                b.putDouble("theater_lat", myTheater.getLat());
+                b.putDouble("theater_long", myTheater.getLongitude());
+                b.putString("theater_pic", myTheater.getPicUrl());
+                it.putExtras(b);
+                startActivity(it);
+            }
+            break;
+
             default:
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -240,6 +300,9 @@ public class MainActivity extends AppCompatActivity
                     view = convertView;
                     //Log.d(TAG,"有缓存，不需要重新生成: " + position);
                 }
+
+                InitforPalette(view);
+
                 mTitle = (TextView) view.findViewById(R.id.textViewDetail);//找到textViewDetail
                 mTitle.setText(movieList.get(position).getTitle());//设置参数
 
@@ -272,6 +335,8 @@ public class MainActivity extends AppCompatActivity
 
                 mShowtime = (TextView) view.findViewById(R.id.textViewTime);//找到textViewDetail
                 mShowtime.setText(sb.toString());//设置参数
+
+                SetColor(movieList.get(position).picUrl);
 
                 return view;
             }

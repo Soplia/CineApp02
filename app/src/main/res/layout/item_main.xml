@@ -16,7 +16,6 @@
             android:layout_width="@dimen/weight_zero"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#120ff0"
             android:orientation="horizontal">
 
             <ImageView

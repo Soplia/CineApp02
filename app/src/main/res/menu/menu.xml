@@ -7,6 +7,11 @@
     <item
         android:id="@+id/menuTheater"
         android:icon="@mipmap/ic_launcher"
-        android:title="Theater"
+        android:title="TheaterPic"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/menuTablayout"
+        android:icon="@mipmap/ic_launcher"
+        android:title="Tablayout"
         app:showAsAction="withText"/>
 </menu>

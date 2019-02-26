@@ -8,11 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="imad.jrxie.cineapp.TheaterPicture">
 
+    <TextView
+        android:id="@+id/textNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Click this picture to see the Map">
+    </TextView>
+
     <ImageView
         android:id="@+id/imgMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_below="@+id/toolbar"></ImageView>
+        android:layout_below="@+id/textNotification"></ImageView>
 
 </RelativeLayout>

@@ -8,14 +8,27 @@
 package imad.jrxie.cineapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.graphics.Palette;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 
@@ -24,18 +37,24 @@ public class MovieActivity extends Activity
     public String TAG = "MovieActivity";
     private TextView mDuration;
     private TextView mCategory;
-    //private TextView mCountry;
-    //private TextView mDescription;
     private Intent myIntent;
     private Bundle myBundle;
     private RatingBar pRatingBar;
     private RatingBar sRatingBar;
     private JCVideoPlayerStandard player;
+    private LinearLayout line1,line2,line3;
+    private Toolp tool;
 
     public void Init()
     {
         myIntent = getIntent();
         myBundle = myIntent.getExtras();
+
+        tool = new Toolp();
+
+        line1 = (LinearLayout) findViewById(R.id.movieDetail3);
+        line2 = (LinearLayout) findViewById(R.id.movieDetailRightP);
+        line3 = (LinearLayout) findViewById(R.id.movieDetailRightS);
 
         player = (JCVideoPlayerStandard) findViewById(R.id.videoPlayer);
 
@@ -47,19 +66,34 @@ public class MovieActivity extends Activity
         mCategory = (TextView) findViewById(R.id.movieDetailCategory);
         mCategory.setText(myBundle.getString("category" ));
 
-        //mCountry = (TextView) findViewById(R.id.movieDetailCountry);
-        //mCountry.setText(myBundle.getString("country" ));
-
-        //mDescription = (TextView) findViewById(R.id.movieDetailDesc);
-
         pRatingBar  = (RatingBar)findViewById(R.id.movieDetailRightPstar);
         pRatingBar.setRating(Float.parseFloat(myBundle.getString("spect" )));
 
         sRatingBar  = (RatingBar)findViewById(R.id.movieDetailRightSstar);
         sRatingBar.setRating(Float.parseFloat(myBundle.getString("press" )));
+    }
 
-        //mDescription = (TextView) findViewById(R.id.movieDetailDesc);
-        //mDescription.setText(myBundle.getString("description" ));
+    public void SetColor()
+    {
+        Bitmap bitmap = tool.GetBitMBitmap(myBundle.getString("picUrl"));
+        //Log.e(TAG,"picurl = " + myBundle.get("picUrl" ));
+        if (bitmap == null)
+        {
+            return;
+        }
+
+        Palette palette = Palette.from(bitmap).generate();
+
+        Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
+        Palette.Swatch vibrantLight = palette.getLightVibrantSwatch();//有活力的，亮色
+        Palette.Swatch muted = palette.getMutedSwatch();//柔和的
+
+        if(vibrantLight != null)
+            line1.setBackgroundColor(vibrantLight.getRgb());
+        if (vibrant != null)
+            line2.setBackgroundColor(vibrant.getRgb());
+        if (muted != null)
+            line3.setBackgroundColor(muted.getRgb());
     }
 
     @Override
@@ -75,16 +109,14 @@ public class MovieActivity extends Activity
             public void onClick(View v)
             {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                //Log.e(TAG, myBundle.getString("videoUrl"));
                 intent.setData(Uri.parse(myBundle.getString("videoUrl")));
                 startActivity(intent);
             }
         });
 
-        //Log.e(TAG, myBundle.getString("videoUrl"));
-
         Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
 
+        SetColor();
     }
 
     /*
