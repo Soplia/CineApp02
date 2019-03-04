@@ -7,8 +7,11 @@
 
 package imad.jrxie.cineapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.List;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -63,8 +68,38 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!isNetworkAvailable(this))
+        {
+            Toast toast = Toast.makeText(MainActivity.this, "Please check the network and restart the App!", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        }
+
+
         RequestDatabase();
+
     }
+
+    public boolean isNetworkAvailable(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm == null)
+            return false;
+        else
+        {
+            //如果仅仅是用来判断网络连接
+            //则可以使用 cm.getActiveNetworkInfo().isAvailable();
+            NetworkInfo[] info = cm.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                        return true;
+        }
+        return false;
+    }
+
 
     public void SetColor(String picUrl)
     {
