@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (!isNetworkAvailable(this))
         {
             Toast toast = Toast.makeText(MainActivity.this, "Please check the network and restart the App!", Toast.LENGTH_LONG);
@@ -75,9 +76,7 @@ public class MainActivity extends AppCompatActivity
             toast.show();
         }
 
-
         RequestDatabase();
-
     }
 
     public boolean isNetworkAvailable(Context context)
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity
         }
         return false;
     }
-
 
     public void SetColor(String picUrl)
     {
@@ -215,6 +213,7 @@ public class MainActivity extends AppCompatActivity
                         mv.setSpect(String.valueOf(R.integer.no_spect));
 
                     mv.showTime.add(response.body().movieShowtimes.get(i).display);
+
                     Trailer temp = response.body().movieShowtimes.get(i).onShow.movie.trailer;
                     if(temp != null)
                     {

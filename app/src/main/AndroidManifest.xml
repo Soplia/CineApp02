@@ -38,7 +38,8 @@
 
         <activity android:name=".TheaterPicture" />
         <activity android:name=".TablayoutActivity" />
-        <activity android:name=".ViewpagerFragment"></activity>
+        <activity android:name=".ViewpagerFragment" />
+        <activity android:name=".WareListActivity"></activity>
     </application>
 
 </manifest>
