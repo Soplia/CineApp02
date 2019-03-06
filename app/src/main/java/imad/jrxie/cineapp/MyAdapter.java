@@ -24,10 +24,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyAdapter extends FragmentPagerAdapter
 {
-    private int mCount=3;
-    private int[] mColors=new int[]{android.R.color.holo_orange_dark,android.R.color.holo_green_dark,android.R.color.holo_red_dark};
+    //private int mCount=3;
+    //private int[] mColors=new int[]{android.R.color.holo_orange_dark,android.R.color.holo_green_dark,android.R.color.holo_red_dark};
 
-    Toolp myTool = new Toolp();
+    private final List<ViewpagerFragment> mFragments = new ArrayList<>();
+    private final List<String> mFragmentTitles = new ArrayList<>();
+
+    public void addFragment(ViewpagerFragment fragment, String title)
+    {
+        mFragments.add(fragment);
+        mFragmentTitles.add(title);
+    }
 
     public MyAdapter(FragmentManager fm)
     {
@@ -37,18 +44,20 @@ public class MyAdapter extends FragmentPagerAdapter
     @Override
     public Fragment getItem(int position)
     {
-        return  ViewpagerFragment.newInstance(position,mColors[position]);
+        //return  ViewpagerFragment.newInstance(position,mColors[position]);
+        return mFragments.get(position);
     }
 
     @Override
     public int getCount()
     {
-        return mCount;
+        return mFragments.size();
     }
 
     @Override
     public CharSequence getPageTitle(int position)
     {
-        return "Page"+(position+1);
+        //return "Page"+(position+1);
+        return mFragmentTitles.get(position);
     }
 }
