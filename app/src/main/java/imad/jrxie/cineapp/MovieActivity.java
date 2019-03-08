@@ -7,6 +7,7 @@
 
 package imad.jrxie.cineapp;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -45,8 +48,31 @@ public class MovieActivity extends Activity
     private LinearLayout line1,line2,line3;
     private Toolp tool;
 
+    public final int MSG_DOWN_FAIL = 1;
+    public final int MSG_DOWN_SUCCESS = 2;
+    private Handler mHandler;
+
+    @SuppressLint("HandlerLeak")
     public void Init()
     {
+        mHandler = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case MSG_DOWN_FAIL:
+                        //mTipTv.setText("download fial");
+                        break;
+                    case MSG_DOWN_SUCCESS:
+                        SetColor((Bitmap)msg.obj);
+                        break;
+                    default:
+                        break;
+                }
+            };
+        };
+
         myIntent = getIntent();
         myBundle = myIntent.getExtras();
 
@@ -73,9 +99,9 @@ public class MovieActivity extends Activity
         sRatingBar.setRating(Float.parseFloat(myBundle.getString("press" )));
     }
 
-    public void SetColor()
+    public void SetColor(Bitmap bitmap)
     {
-        Bitmap bitmap = tool.GetBitMBitmap(myBundle.getString("picUrl"));
+        //Bitmap bitmap = tool.GetBitMBitmap(myBundle.getString("picUrl"));
         //Log.e(TAG,"picurl = " + myBundle.get("picUrl" ));
         if (bitmap == null)
         {
@@ -97,17 +123,14 @@ public class MovieActivity extends Activity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
 
         Init();
 
-        player.startButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
+        player.startButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(myBundle.getString("videoUrl")));
                 startActivity(intent);
@@ -116,7 +139,19 @@ public class MovieActivity extends Activity
 
         Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
 
-        SetColor();
+        new Thread()
+        {
+            public void run()
+            {
+                Bitmap bitmap = tool.GetBitMBitmap(myBundle.getString("picUrl"));
+                Message msg = new Message();
+                msg.what = MSG_DOWN_SUCCESS;
+                msg.obj = bitmap;
+                mHandler.sendMessage(msg);
+            }
+        }.start();
+
+        //SetColor();
     }
 
     /*

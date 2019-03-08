@@ -32,7 +32,7 @@ public class TheaterPicture extends AppCompatActivity
 
         Picasso.with(TheaterPicture.this)
                 .load(infoBundle.getString("theater_pic"))
-                .resize(500, 220)
+                .resize(500, 222)
                 .centerCrop()
                 .error(R.drawable.ic_launcher_background)
                 .into(imgMap);

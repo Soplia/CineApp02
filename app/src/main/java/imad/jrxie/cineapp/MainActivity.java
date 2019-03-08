@@ -7,6 +7,7 @@
 
 package imad.jrxie.cineapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,9 @@ import android.os.Bundle;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.util.Log;
@@ -46,7 +50,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
 {
-    public String TAG = "MainActivity";
+    public final String TAG = "MainActivity";
     private TextView mTitle;
     private TextView mDuration;
     private TextView mCategory;
@@ -56,12 +60,15 @@ public class MainActivity extends AppCompatActivity
     private ImageView ivBasicImage;
     private RatingBar pRatingBar;
     private RatingBar sRatingBar;
-    DecimalFormat doubleFormat=new DecimalFormat(".##");
+    private DecimalFormat doubleFormat=new DecimalFormat(".##");
     private List<MovieInfo> movieList = new ArrayList<MovieInfo>();
-    public TheaterInfo myTheater;
+    private TheaterInfo myTheater;
     private Toolbar toolbar;
     private LinearLayout line1,line2,line3,line4,line5;
     private Toolp tool;
+    public final int MSG_DOWN_FAIL = 1;
+    public final int MSG_DOWN_SUCCESS = 2;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -99,11 +106,9 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    public void SetColor(String picUrl)
+    public void SetColor(Bitmap bitmap)
     {
-        Log.e(TAG,"picurl = " +picUrl);
-
-        Bitmap bitmap = tool.GetBitMBitmap(picUrl);
+        //Log.e(TAG,"picurl = " +picUrl);
 
         if (bitmap == null)
         {
@@ -111,7 +116,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         Palette palette = Palette.from(bitmap).generate();
-
         Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
         Palette.Swatch vibrantDark = palette.getDarkVibrantSwatch();//有活力的，暗色
         Palette.Swatch vibrantLight = palette.getLightVibrantSwatch();//有活力的，亮色
@@ -134,8 +138,28 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("HandlerLeak")
     public void InitforPalette(View view)
     {
+        tool = new Toolp();
+        mHandler = new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                switch(msg.what)
+                {
+                    case MSG_DOWN_FAIL:
+                        //mTipTv.setText("download fial");
+                        break;
+                    case MSG_DOWN_SUCCESS:
+                        SetColor((Bitmap)msg.obj);
+                        break;
+                    default:
+                        break;
+                }
+            };
+        };
+
         line1 = (LinearLayout) view.findViewById(R.id.movieDetail);
         line2 = (LinearLayout) view.findViewById(R.id.movieDetailRightDC);
         line3 = (LinearLayout) view.findViewById(R.id.movieDetailRightP);
@@ -148,8 +172,6 @@ public class MainActivity extends AppCompatActivity
      */
     public void RequestDatabase()
     {
-        tool = new Toolp();
-
         //创建Retrofit对象
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://etudiants.openium.fr/") // 设置 网络请求 Url , 这个地方的保留了最主要的网址,需要与前面的合并
@@ -157,10 +179,8 @@ public class MainActivity extends AppCompatActivity
                 .build();
         // 创建 网络请求接口 的实例
         GetRequest_Interface request = retrofit.create(GetRequest_Interface.class);
-
         //对 发送请求 进行封装
         Call<Info> call = request.getCall();
-
         //发送网络请求(异步)
         call.enqueue(new Callback<Info>()
         {
@@ -270,7 +290,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-
         int id= item.getItemId();
         switch (id)
         {
@@ -370,8 +389,22 @@ public class MainActivity extends AppCompatActivity
                 mShowtime = (TextView) view.findViewById(R.id.textViewTime);//找到textViewDetail
                 mShowtime.setText(sb.toString());//设置参数
 
-                SetColor(movieList.get(position).picUrl);
 
+                final String picPath = movieList.get(position).picUrl;
+
+                new Thread()
+                {
+                    public void run()
+                    {
+                        Bitmap bitmap = tool.GetBitMBitmap(picPath);
+                        Message msg = new Message();
+                        msg.what = MSG_DOWN_SUCCESS;
+                        msg.obj = bitmap;
+                        mHandler.sendMessage(msg);
+                    }
+                }.start();
+
+                //SetColor(movieList.get(position).picUrl);
                 return view;
             }
 
@@ -391,10 +424,7 @@ public class MainActivity extends AppCompatActivity
         };
 
         lv = (ListView) findViewById(R.id.listView1);
-
         lv.setAdapter(adapter);
-
-
         //获取当前ListView点击的行数，并且得到该数据
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
