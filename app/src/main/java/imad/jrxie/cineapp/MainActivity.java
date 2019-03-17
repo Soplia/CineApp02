@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**
+         * Check whether the network available or not
+         */
         if (!isNetworkAvailable(this))
         {
             Toast toast = Toast.makeText(MainActivity.this, "Please check the network and restart the App!", Toast.LENGTH_LONG);
@@ -106,6 +109,10 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    /**
+     * Use Palette to set color
+     * @param bitmap The bitmap format pic use to set color
+     */
     public void SetColor(Bitmap bitmap)
     {
         //Log.e(TAG,"picurl = " +picUrl);
@@ -117,7 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         Palette palette = Palette.from(bitmap).generate();
         Palette.Swatch vibrant = palette.getVibrantSwatch();//有活力的
-        Palette.Swatch vibrantDark = palette.getDarkVibrantSwatch();//有活力的，暗色
+        //Palette.Swatch vibrantDark = palette.getDarkVibrantSwatch();//有活力的，暗色
         Palette.Swatch vibrantLight = palette.getLightVibrantSwatch();//有活力的，亮色
         Palette.Swatch muted = palette.getMutedSwatch();//柔和的
         Palette.Swatch mutedLight = palette.getLightMutedSwatch();//柔和的,亮色
@@ -142,6 +149,9 @@ public class MainActivity extends AppCompatActivity
     public void InitforPalette(View view)
     {
         tool = new Toolp();
+        /**
+         * Handle message because we can not cheange wdiget at the same subthread.
+         */
         mHandler = new Handler()
         {
             public void handleMessage(Message msg)
@@ -278,7 +288,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
     }
 
-    //加载菜单项
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -286,7 +295,11 @@ public class MainActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    //逻辑框架
+    /**
+     * Jump to corresponding activity according to the selected item
+     * @param item The selected item
+     * @return super.onOptionsItemSelected(item);
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {

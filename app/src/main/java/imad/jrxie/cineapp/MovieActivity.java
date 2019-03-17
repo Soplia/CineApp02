@@ -99,6 +99,10 @@ public class MovieActivity extends Activity
         sRatingBar.setRating(Float.parseFloat(myBundle.getString("press" )));
     }
 
+    /**
+     * Use Palette to set color
+     * @param bitmap The bitmap format pic use to set color
+     */
     public void SetColor(Bitmap bitmap)
     {
         //Bitmap bitmap = tool.GetBitMBitmap(myBundle.getString("picUrl"));
@@ -139,6 +143,9 @@ public class MovieActivity extends Activity
 
         Glide.with(MovieActivity.this).load(myBundle.getString("picUrl")).into(player.thumbImageView);
 
+        /**
+         * Start a new thead to download the picture and try to set color.
+         */
         new Thread()
         {
             public void run()

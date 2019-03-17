@@ -41,6 +41,11 @@ public class TablayoutActivity extends AppCompatActivity
                 tabStr[i][j] = "";
     }
 
+    /**
+     * Get the index at matrix Month according to the parameter
+     * @param str Denote the name of month
+     * @return The index in the matrix Month
+     */
     private int GetIndexbyMonthName(String str)
     {
         for ( int i = 0; i < 12; i++)
@@ -49,6 +54,11 @@ public class TablayoutActivity extends AppCompatActivity
         return -1;
     }
 
+    /**
+     * Get the name of month according to the parameter
+     * @param i The index of matrix Month
+     * @return The name of the month according to parameret i
+     */
     private String GetMonthNamebyindex(int i)
     {
         return Month[i - 1];
@@ -99,6 +109,9 @@ public class TablayoutActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Get the show time from the movielist then used for tablayout
+     */
     public void ExtractMovieShowTime()
     {
         //InitTabstr();
